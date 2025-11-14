@@ -2,7 +2,7 @@
   
 🎯 Software developer | 🤖 3rd Year IT Student
 
-😄 he/him 16 y/o
+😄 he/him 17 y/o
 
 🔭 I'm currently learning CSS and HTML, focusing on web development and creating stylish, functional websites.
 
