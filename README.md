@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @Marcu08
   
-🎯 Software developer | 🤖 3rd Year IT Student
+🎯 Software developer | 🤖 4th Year IT Student
 
 😄 he/him 17 y/o
 
