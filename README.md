@@ -1,8 +1,8 @@
 - 👋 Hi, I’m @Marcu08
   
-🎯 Software developer | 🤖 4th Year IT Student
+🎯 Software developer | 🤖 5th Year IT Student
 
-😄 he/him 17 y/o
+😄 he/him 18 y/o
 
 🔭 I'm currently learning CSS and HTML, focusing on web development and creating stylish, functional websites.
 
