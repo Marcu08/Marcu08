@@ -10,7 +10,7 @@ const OUTPUT_SVG_PATH = path.join(__dirname, "../html-wrapper.svg");
 
 const GITHUB_USER = "Marcu08";
 const SNAKE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_USER}/output/github-contribution-grid-snake-dark.svg`;
-const SPOTIFY_URL = "https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&hide_remaster=false";
+const SPOTIFY_URL = "https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&cover_image=true&theme=default&show_offline=true&background_color=121212&interchange=true";
 
 async function fetchAsDataUri(url) {
     const res = await fetch(url);
@@ -50,42 +50,21 @@ async function build() {
     }
     svg = svg.replace("{{SNAKE_SVG}}", snakeContent);
 
-    // Spotify: ricostruito in SVG puro con layout uguale al badge originale
+    // Spotify: estrae cover image dal badge SVG estero (no foreignObject = no HTML inside SVG)
     try {
-        const spotReg = /<image\s+href="https:\/\/spotify-github-profile[^"]*"[^>]*\/>/;
         const spotRes = await fetch(SPOTIFY_URL);
         if (spotRes.ok) {
             const spotSvg = await spotRes.text();
             const coverMatch = spotSvg.match(/<img[^>]+src="([^"]+)"/);
-            const artistMatch = spotSvg.match(/<div class="artist">([^<]*)<\/div>/);
-            const songMatch = spotSvg.match(/<div class="song">([^<]*)<\/div>/);
-            const isPlaying = /playing/i.test(spotSvg) && !/not.play/i.test(spotSvg);
-            const cx = 615;
-            sc = `<g>`;
-            const statusColor = isPlaying ? "#53b14f" : "#b3b3b3";
-            const statusText = isPlaying ? "In riproduzione" : "Ultima traccia";
-            sc += `<text x="${cx}" y="260" fill="${statusColor}" font-family="Arial,sans-serif" font-size="13" font-weight="bold" text-anchor="middle">${statusText}</text>`;
-            if (artistMatch) {
-                const a = artistMatch[1].trim().slice(0, 32);
-                sc += `<text x="${cx}" y="295" fill="#ffffff" font-family="Arial,sans-serif" font-size="20" font-weight="bold" text-anchor="middle">${a}</text>`;
-            }
-            if (songMatch) {
-                const s = songMatch[1].trim().slice(0, 36);
-                sc += `<text x="${cx}" y="320" fill="#b3b3b3" font-family="Arial,sans-serif" font-size="16" text-anchor="middle">${s}</text>`;
-            }
-            let coverSize = 220;
             if (coverMatch) {
-                const cd = await fetchAsDataUri(coverMatch[1]);
-                if (cd) sc += `<image href="${cd}" x="${cx - coverSize / 2}" y="340" width="${coverSize}" height="${coverSize}" rx="5" />`;
+                const coverDataUri = await fetchAsDataUri(coverMatch[1]);
+                if (coverDataUri) {
+                    const spotReg = /<image\s+href="https:\/\/spotify-github-profile[^"]+"/;
+                    svg = svg.replace(spotReg, `<image href="${coverDataUri}"`);
+                }
             }
-            sc += `</g>`;
-            svg = svg.replace(spotReg, sc);
-        } else {
-            svg = svg.replace(spotReg, `<text x="615" y="420" fill="#b3b3b3" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Spotify — nessun dato</text>`);
         }
-    } catch {
-        svg = svg.replace(/<image\s+href="https:\/\/spotify-github-profile[^"]*"[^>]*\/>/, `<text x="615" y="420" fill="#b3b3b3" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Spotify — nessun dato</text>`);
-    }
+    } catch {}
 
     fs.writeFileSync(OUTPUT_SVG_PATH, svg);
     console.log("html-wrapper.svg generato");
