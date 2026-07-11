@@ -11,7 +11,7 @@ const OUTPUT_SVG_PATH = path.join(__dirname, "../html-wrapper.svg");
 const GITHUB_USER = "Marcu08";
 const SNAKE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_USER}/output/github-contribution-grid-snake-dark.svg`;
 const SPOTIFY_UID = "g94czyi452vvziaas0pheb84q";
-const SPOTIFY_API_URL = `https://spotify-github-profile.kittinanx.com/api/view?uid=${SPOTIFY_UID}&cover_image=true&theme=default&show_offline=false&background_color=0d1117&interchange=true&bar_color=53b14f&bar_color_cover=true`;
+const SPOTIFY_API_URL = `https://spotify-github-profile.kittinanx.com/api/view?uid=${SPOTIFY_UID}&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&hide_remaster=false`;
 
 function spotifyPlaceholder() {
     return `<a href="https://open.spotify.com/user/${SPOTIFY_UID}">
