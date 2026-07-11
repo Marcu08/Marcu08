@@ -10,7 +10,7 @@ const OUTPUT_SVG_PATH = path.join(__dirname, "../html-wrapper.svg");
 
 const GITHUB_USER = "Marcu08";
 const SNAKE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_USER}/output/github-contribution-grid-snake-dark.svg`;
-const SPOTIFY_URL = "https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=true";
+const SPOTIFY_URL = "https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false&profanity=false&hide_remaster=false";
 
 async function fetchAsDataUri(url) {
     const res = await fetch(url);
