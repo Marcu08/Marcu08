@@ -50,19 +50,40 @@ async function build() {
     }
     svg = svg.replace("{{SNAKE_SVG}}", snakeContent);
 
-    // Spotify: estrae cover image dal badge SVG estero (no foreignObject = no HTML inside SVG)
+    // Spotify: badge con foreignObject non funziona su GitHub, costruisco SVG puro con cover + testo
     try {
         const spotRes = await fetch(SPOTIFY_URL);
         if (spotRes.ok) {
             const spotSvg = await spotRes.text();
             const coverMatch = spotSvg.match(/<img[^>]+src="([^"]+)"/);
+            const statusMatch = spotSvg.match(/<div class="(playing|not-play)">([^<]+)<\/div>/);
+            const artistMatch = spotSvg.match(/<div class="artist">([^<]*)<\/div>/);
+            const songMatch = spotSvg.match(/<div class="song">([^<]*)<\/div>/);
+            const status = statusMatch ? statusMatch[2].trim() : "Offline";
+            const artist = artistMatch ? artistMatch[1].trim() : "";
+            const song = songMatch ? songMatch[1].trim() : "";
+            const cx = 615, cy = 385;
+            let spotContent = "";
             if (coverMatch) {
                 const coverDataUri = await fetchAsDataUri(coverMatch[1]);
                 if (coverDataUri) {
-                    const spotReg = /<image\s+href="https:\/\/spotify-github-profile[^"]+"/;
-                    svg = svg.replace(spotReg, `<image href="${coverDataUri}"`);
+                    spotContent += `<image href="${coverDataUri}" x="${cx - 100}" y="${cy - 130}" width="200" height="200" rx="4" />`;
                 }
             }
+            const isPlaying = status.toLowerCase() === "now playing";
+            const statusColor = isPlaying ? "#53b14f" : "#ff1616";
+            spotContent += `<rect x="${cx - 55}" y="${cy + 85}" width="110" height="24" rx="12" fill="${statusColor}" fill-opacity="0.15" />`;
+            spotContent += `<text x="${cx}" y="${cy + 101}" fill="${statusColor}" font-family="Arial,sans-serif" font-size="12" font-weight="bold" text-anchor="middle">${status}</text>`;
+            if (song) {
+                const displayedSong = song.length > 28 ? song.slice(0, 27) + "…" : song;
+                spotContent += `<text x="${cx}" y="${cy + 125}" fill="#ffffff" font-family="Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="middle">${displayedSong}</text>`;
+            }
+            if (artist) {
+                const displayedArtist = artist.length > 35 ? artist.slice(0, 34) + "…" : artist;
+                spotContent += `<text x="${cx}" y="${cy + 145}" fill="#b3b3b3" font-family="Arial,sans-serif" font-size="13" text-anchor="middle">${displayedArtist}</text>`;
+            }
+            const spotReg = /<image[^>]*href="https:\/\/spotify-github-profile[^"]*"[^>]*\/>/;
+            svg = svg.replace(spotReg, spotContent);
         }
     } catch {}
 
