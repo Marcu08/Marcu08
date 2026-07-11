@@ -2,10 +2,10 @@
   "name": "francesco-marcucci-readme",
   "version": "1.0.0",
   "description": "GitHub Profile README for Francesco Marcucci",
-  "main": "scripts/build.ts",
+  "main": "scripts/build.js",
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.ts"
+    "build": "node scripts/build.js"
   },
   "dependencies": {
     "puppeteer": "^22.0.0"
