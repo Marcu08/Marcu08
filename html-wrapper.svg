@@ -1,4 +1,6 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<svg width="840" height="800" xmlns="http://www.w3.org/2000/svg">
+  <foreignObject width="100%" height="100%">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -115,12 +117,15 @@
             </div>
 
             <div class="box" style="grid-column: span 1">
-                <a href="https://open.spotify.com/user/g94czyi452vvziaas0pheb84q">{{SPOTIFY_SVG}}</a>
+                <a href="https://open.spotify.com/user/g94czyi452vvziaas0pheb84q">Error: Invalid Spotify access_token or refresh_token. Possibly the token revoked. Please re-login at https://github.com/kittinan/spotify-github-profile</a>
             </div>
 
             <div class="box" style="grid-column: span 2">
-                <a href="https://github.com/Marcu08">{{SNAKE_SVG}}</a>
+                <a href="https://github.com/Marcu08">404: Not Found</a>
             </div>
         </div>
     </body>
 </html>
+
+  </foreignObject>
+</svg>
