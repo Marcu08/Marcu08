@@ -50,7 +50,7 @@ async function build() {
     }
     svg = svg.replace("{{SNAKE_SVG}}", snakeContent);
 
-    // Spotify: costruisce SVG puro (remote URL bloccato da GitHub, foreignObject non supportato)
+    // Spotify: ricostruito in SVG puro con layout uguale al badge originale
     try {
         const spotReg = /<image\s+href="https:\/\/spotify-github-profile[^"]*"[^>]*\/>/;
         const spotRes = await fetch(SPOTIFY_URL);
@@ -60,24 +60,25 @@ async function build() {
             const artistMatch = spotSvg.match(/<div class="artist">([^<]*)<\/div>/);
             const songMatch = spotSvg.match(/<div class="song">([^<]*)<\/div>/);
             const isPlaying = /playing/i.test(spotSvg) && !/not.play/i.test(spotSvg);
-            const cx = 615, cy = 385;
-            let sc = "";
+            const cx = 615;
+            sc = `<g>`;
+            const statusColor = isPlaying ? "#53b14f" : "#b3b3b3";
+            const statusText = isPlaying ? "In riproduzione" : "Ultima traccia";
+            sc += `<text x="${cx}" y="260" fill="${statusColor}" font-family="Arial,sans-serif" font-size="13" font-weight="bold" text-anchor="middle">${statusText}</text>`;
+            if (artistMatch) {
+                const a = artistMatch[1].trim().slice(0, 32);
+                sc += `<text x="${cx}" y="295" fill="#ffffff" font-family="Arial,sans-serif" font-size="20" font-weight="bold" text-anchor="middle">${a}</text>`;
+            }
+            if (songMatch) {
+                const s = songMatch[1].trim().slice(0, 36);
+                sc += `<text x="${cx}" y="320" fill="#b3b3b3" font-family="Arial,sans-serif" font-size="16" text-anchor="middle">${s}</text>`;
+            }
+            let coverSize = 220;
             if (coverMatch) {
                 const cd = await fetchAsDataUri(coverMatch[1]);
-                if (cd) sc += `<image href="${cd}" x="${cx - 100}" y="${cy - 130}" width="200" height="200" rx="4" />`;
+                if (cd) sc += `<image href="${cd}" x="${cx - coverSize / 2}" y="340" width="${coverSize}" height="${coverSize}" rx="5" />`;
             }
-            const sc2 = isPlaying ? "#53b14f" : "#b3b3b3";
-            const label = isPlaying ? "In riproduzione" : "Ultima traccia";
-            sc += `<rect x="${cx - 60}" y="${cy + 85}" width="120" height="24" rx="12" fill="${sc2}" fill-opacity="0.15" />`;
-            sc += `<text x="${cx}" y="${cy + 101}" fill="${sc2}" font-family="Arial,sans-serif" font-size="12" font-weight="bold" text-anchor="middle">${label}</text>`;
-            if (songMatch) {
-                const s = songMatch[1].trim().slice(0, 28);
-                sc += `<text x="${cx}" y="${cy + 125}" fill="#fff" font-family="Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="middle">${s}</text>`;
-            }
-            if (artistMatch) {
-                const a = artistMatch[1].trim().slice(0, 35);
-                sc += `<text x="${cx}" y="${cy + 145}" fill="#b3b3b3" font-family="Arial,sans-serif" font-size="13" text-anchor="middle">${a}</text>`;
-            }
+            sc += `</g>`;
             svg = svg.replace(spotReg, sc);
         } else {
             svg = svg.replace(spotReg, `<text x="615" y="420" fill="#b3b3b3" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Spotify — nessun dato</text>`);
