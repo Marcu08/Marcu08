@@ -48,7 +48,7 @@ async function build() {
     html = html.replace("{{SNAKE_SVG}}", snakeContent);
     html = html.replace("{{SPOTIFY_CARD}}", spotifyCard);
 
-    const svg = `<svg width="840" height="800" xmlns="http://www.w3.org/2000/svg">
+    const svg = `<svg width="840" height="950" xmlns="http://www.w3.org/2000/svg">
   <foreignObject width="100%" height="100%">
     ${html}
   </foreignObject>
