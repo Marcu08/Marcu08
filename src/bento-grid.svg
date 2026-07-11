@@ -132,7 +132,7 @@
   <g>
     <rect class="box-bg" x="430" y="210" width="390" height="350" rx="5" />
     <a href="https://github.com/kittinan/spotify-github-profile">
-      <image href="https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&amp;cover_image=true&amp;theme=default&amp;show_offline=true&amp;background_color=121212&amp;interchange=true" x="440" y="220" width="370" height="330" />
+      <image href="https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&amp;cover_image=true&amp;theme=default&amp;show_offline=false&amp;background_color=121212&amp;interchange=true" x="440" y="220" width="370" height="330" />
     </a>
   </g>
 
