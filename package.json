@@ -9,8 +9,5 @@
   },
   "dependencies": {
     "puppeteer": "^22.0.0"
-  },
-  "devDependencies": {
-    "tsx": "^4.7.0"
   }
 }
