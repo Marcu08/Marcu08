@@ -34,8 +34,19 @@ async function build() {
     if (!snakeContent) {
         snakeContent = `<text x="420" y="780" fill="#666" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Contributions snake — a breve disponibile</text>`;
     } else {
+        const dim = snakeContent.match(/<svg[^>]*\swidth="([\d.]+)"[^>]*\sheight="([\d.]+)"/);
+        const BOX_X = 20, BOX_Y = 580, BOX_W = 800, BOX_H = 400, PAD = 20, TOP_OFFSET = 40;
+        const srcW = dim ? parseFloat(dim[1]) : 880;
+        const srcH = dim ? parseFloat(dim[2]) : 192;
+        const availW = BOX_W - PAD * 2;
+        const availH = BOX_H - TOP_OFFSET - PAD;
+        const scale = Math.min(availW / srcW, availH / srcH);
+        const scaledW = srcW * scale;
+        const scaledH = srcH * scale;
+        const tx = BOX_X + (BOX_W - scaledW) / 2;
+        const ty = BOX_Y + TOP_OFFSET + (BOX_H - TOP_OFFSET - scaledH) / 2;
         snakeContent = snakeContent.replace(/<svg[^>]*>/i, '').replace(/<\/svg>/i, '');
-        snakeContent = `<g transform="translate(40, 600)">${snakeContent}</g>`;
+        snakeContent = `<g transform="translate(${tx.toFixed(1)}, ${ty.toFixed(1)}) scale(${scale.toFixed(4)})">${snakeContent}</g>`;
     }
     svg = svg.replace("{{SNAKE_SVG}}", snakeContent);
 
