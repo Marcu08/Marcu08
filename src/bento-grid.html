@@ -1,0 +1,115 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Francesco Marcucci - Bento Grid</title>
+        <style>
+            body {
+                background-color: #121212;
+                color: white;
+                font-family: Arial, sans-serif;
+                margin: 0;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                width: 800px;
+                padding: 20px;
+                background: #080b0f;
+                border-radius: 10px;
+            }
+            .box {
+                background: #0d1117;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .bento-img {
+                width: 100%;
+                border-radius: 10px;
+                display: block;
+            }
+            .profile-box {
+                background: url("data:image/webp;base64,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```") no-repeat center center/cover;
+                border-radius: 15px;
+                padding: 0;
+            }
+            .profile-box > a {
+                position: relative;
+                border-radius: 10px;
+                text-align: center;
+                backdrop-filter: blur(3px);
+                background: rgba(0, 0, 0, 0.5);
+                padding: 20px;
+                color: white;
+                text-decoration: none;
+            }
+            .badges-container {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+            .language-icon {
+                width: 48px;
+                height: 48px;
+                margin: 5px;
+            }
+            .social-icons {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                margin-top: 10px;
+            }
+            .social-icons img {
+                width: 32px;
+                height: 32px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="grid">
+            <div class="box profile-box" style="grid-column: span 2">
+                <a href="https://github.com/Francesco-Marcucci">
+                    <div>
+                        <h2>Francesco Marcucci</h2>
+                        <p>Sviluppatore appassionato con un occhio per il design e un cuore per l'innovazione. Trasformo idee complesse in soluzioni eleganti e funzionali.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="badges-container" style="grid-column: span 1">
+                <div class="box">
+                    <h3>Le mie competenze</h3>
+                    <div class="language-icons">
+                        <img class="language-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" />
+                        <img class="language-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" />
+                        <img class="language-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
+                        <img class="language-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powershell/powershell-original.svg" alt="PowerShell" />
+                        <img class="language-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" />
+                        <img class="language-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" />
+                    </div>
+                </div>
+                <div class="box">
+                    <h3>Connettiti con me</h3>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/francesco_marcuccii"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/instagram/instagram-original.svg" alt="Instagram" /></a>
+                        <a href="https://www.linkedin.com/in/francesco-marcucci-b68919306/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" /></a>
+                        <a href="https://www.tiktok.com/@francesco_marcuccii"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tiktok/tiktok-original.svg" alt="TikTok" /></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box" style="grid-column: span 1">
+                <a href="https://open.spotify.com/user/g94czyi452vvziaas0pheb84q">{{SPOTIFY_SVG}}</a>
+            </div>
+
+            <div class="box" style="grid-column: span 2">
+                <a href="https://github.com/Platane/snk">{{SNAKE_SVG}}</a>
+            </div>
+        </div>
+    </body>
+</html>
