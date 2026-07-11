@@ -24,42 +24,6 @@ function spotifyPlaceholder() {
     </a>`;
 }
 
-function svgToDataUri(svg) {
-    const encoded = Buffer.from(svg).toString("base64");
-    return `data:image/svg+xml;base64,${encoded}`;
-}
-
-async function inlineImages(html) {
-    const imgRegex = /(<img[^>]+)src="([^"]+)"([^>]*>)/g;
-    let result = "";
-    let last = 0;
-    let m;
-    while ((m = imgRegex.exec(html)) !== null) {
-        result += html.slice(last, m.index);
-        const prefix = m[1];
-        const url = m[2];
-        const suffix = m[3];
-        if (url.startsWith("data:")) {
-            result += m[0];
-        } else {
-            try {
-                const res = await fetch(url);
-                if (res.ok) {
-                    const svg = await res.text();
-                    result += `${prefix}src="${svgToDataUri(svg)}"${suffix}`;
-                } else {
-                    result += m[0];
-                }
-            } catch {
-                result += m[0];
-            }
-        }
-        last = imgRegex.lastIndex;
-    }
-    result += html.slice(last);
-    return result;
-}
-
 async function build() {
     let html = fs.readFileSync(BENTO_HTML_PATH, "utf-8");
 
@@ -83,8 +47,6 @@ async function build() {
 
     html = html.replace("{{SNAKE_SVG}}", snakeContent);
     html = html.replace("{{SPOTIFY_CARD}}", spotifyCard);
-
-    html = await inlineImages(html);
 
     const svg = `<svg width="840" height="800" xmlns="http://www.w3.org/2000/svg">
   <foreignObject width="100%" height="100%">
