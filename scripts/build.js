@@ -6,10 +6,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const SVG_TEMPLATE_PATH = path.join(__dirname, "../src/bento-grid.svg");
-const OUTPUT_SVG_PATH = path.join(__dirname, "../html-wrapper.svg");
+
+const VARIANTS = [
+  { suffix: '',       viewBox: "0 0 840 1000", width: 840, height: 1000 },
+  { suffix: '-top',   viewBox: "0 0 840 570",  width: 840, height: 570 },
+  { suffix: '-bottom', viewBox: "0 570 840 430", width: 840, height: 430 },
+];
 
 const GITHUB_USER = "Marcu08";
 const SNAKE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_USER}/output/github-contribution-grid-snake-dark.svg`;
+
+function svgRoot(svg, { viewBox, width, height }) {
+  return svg
+    .replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`)
+    .replace(/\bwidth="[^"]*"/, `width="${width}"`)
+    .replace(/\bheight="[^"]*"/, `height="${height}"`);
+}
 
 async function build() {
     let svg = fs.readFileSync(SVG_TEMPLATE_PATH, "utf-8");
@@ -39,8 +51,11 @@ async function build() {
     }
     svg = svg.replace("{{SNAKE_SVG}}", snakeContent);
 
-    fs.writeFileSync(OUTPUT_SVG_PATH, svg);
-    console.log("html-wrapper.svg generato");
+    for (const v of VARIANTS) {
+        const outPath = path.join(__dirname, `../html-wrapper${v.suffix}.svg`);
+        fs.writeFileSync(outPath, svgRoot(svg, v));
+        console.log(`html-wrapper${v.suffix}.svg generato`);
+    }
 }
 
 build();
