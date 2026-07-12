@@ -10,17 +10,7 @@ const OUTPUT_SVG_PATH = path.join(__dirname, "../html-wrapper.svg");
 
 const GITHUB_USER = "Marcu08";
 const SNAKE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_USER}/output/github-contribution-grid-snake-dark.svg`;
-const SPOTIFY_URL = "https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&cover_image=true&theme=default&show_offline=true&background_color=121212&interchange=true";
-
-async function fetchAsDataUri(url) {
-    const res = await fetch(url);
-    if (!res.ok) return null;
-    const ctype = res.headers.get("content-type") || "";
-    const ext = ctype.includes("svg") ? "svg+xml" : (ctype.includes("png") ? "png" : "svg+xml");
-    const buf = await res.arrayBuffer();
-    const b64 = Buffer.from(buf).toString("base64");
-    return `data:image/${ext};base64,${b64}`;
-}
+const SPOTIFY_URL = "https://spotify-github-profile.kittinanx.com/api/view?uid=g94czyi452vvziaas0pheb84q&cover_image=true&theme=natemoo-re&show_offline=true&background_color=121212&interchange=true";
 
 async function build() {
     let svg = fs.readFileSync(SVG_TEMPLATE_PATH, "utf-8");
@@ -50,19 +40,23 @@ async function build() {
     }
     svg = svg.replace("{{SNAKE_SVG}}", snakeContent);
 
-    // Spotify: estrae cover image dal badge SVG estero (no foreignObject = no HTML inside SVG)
+    // Spotify: scarica badge SVG, rimuove outer <svg>, scala e centra nel box (440,220 370x330)
     try {
         const spotRes = await fetch(SPOTIFY_URL);
         if (spotRes.ok) {
             const spotSvg = await spotRes.text();
-            const coverMatch = spotSvg.match(/<img[^>]+src="([^"]+)"/);
-            if (coverMatch) {
-                const coverDataUri = await fetchAsDataUri(coverMatch[1]);
-                if (coverDataUri) {
-                    const spotReg = /<image\s+href="https:\/\/spotify-github-profile[^"]+"/;
-                    svg = svg.replace(spotReg, `<image href="${coverDataUri}"`);
-                }
-            }
+            const dim = spotSvg.match(/<svg[^>]*\swidth="([\d.]+)"[^>]*\sheight="([\d.]+)"/);
+            const srcW = dim ? parseFloat(dim[1]) : 320;
+            const srcH = dim ? parseFloat(dim[2]) : 84;
+            const boxX = 440, boxY = 220, boxW = 370, boxH = 330;
+            const scale = Math.min(boxW / srcW, boxH / srcH);
+            const sw = srcW * scale, sh = srcH * scale;
+            const tx = boxX + (boxW - sw) / 2;
+            const ty = boxY + (boxH - sh) / 2;
+            const body = spotSvg.replace(/<svg[^>]*>/i, '').replace(/<\/svg>/i, '');
+            const spotContent = `<g transform="translate(${tx.toFixed(1)}, ${ty.toFixed(1)}) scale(${scale.toFixed(4)})">${body}</g>`;
+            const spotReg = /<image\s+href="https:\/\/spotify-github-profile[^"]*"[^>]*\/>/;
+            svg = svg.replace(spotReg, spotContent);
         }
     } catch {}
 
